@@ -17,6 +17,41 @@ namespace TestMemoryAllocation
             public int I { get; set; } = 1;
             public DateTimeOffset Date { get; set; } = DateTimeOffset.Now;
         }
+        [Serializable]
+        class TestObjectWithInstanceMethods
+        {
+            public string String { get; set; }
+            public int I { get; set; } = 1;
+            public DateTimeOffset Date { get; set; } = DateTimeOffset.Now;
+            public void Method1() { }
+            public void Method2() { }
+            public void Method3() { }
+            public void Method4() { }
+            public void Method5() { }
+            public void Method6() { }
+            public void Method7() { }
+            public void Method8() { }
+            public void Method9() { }
+            public void Method10() { }
+        }
+
+        [Serializable]
+        class TestObjectWithStaticMethods
+        {
+            public string String { get; set; }
+            public int I { get; set; } = 1;
+            public DateTimeOffset Date { get; set; } = DateTimeOffset.Now;
+            public static void Method1() { }
+            public static void Method2() { }
+            public static void Method3() { }
+            public static void Method4() { }
+            public static void Method5() { }
+            public static void Method6() { }
+            public static void Method7() { }
+            public static void Method8() { }
+            public static void Method9() { }
+            public static void Method10() { }
+        }
 
 
         [Serializable]
@@ -38,6 +73,7 @@ namespace TestMemoryAllocation
                 foreach (var teststring in testStrings)
                 {
                     Console.Write(ret += $"Testing with string: {teststring}\n");
+                    #region Hashtable
                     if (true)
                     {
                         GC.GetTotalMemory(true); long mem = GC.GetAllocatedBytesForCurrentThread();
@@ -50,6 +86,32 @@ namespace TestMemoryAllocation
                         }
                         long totalmem = GC.GetAllocatedBytesForCurrentThread() - mem;
                         Console.Write(ret += $"Hashtable<TestObject>: ".PadRight(50, ' ') + $"{totalmem.ToString("N0").PadLeft(20, ' ')} B\n");//{Size(collection).ToString("N0").PadLeft(20,' ')} B 
+                    }
+                    if (true)
+                    {
+                        GC.GetTotalMemory(true); long mem = GC.GetAllocatedBytesForCurrentThread();
+                        Hashtable collection = new Hashtable();
+                        for (int i = 0; i < objectCount; i++)
+                        {
+                            var refAtStack = new TestObjectWithInstanceMethods() { String = teststring };
+                            refAtStack.String += "1";
+                            collection[i] = refAtStack;
+                        }
+                        long totalmem = GC.GetAllocatedBytesForCurrentThread() - mem;
+                        Console.Write(ret += $"Hashtable<TestObjectWithInstanceMethods>: ".PadRight(50, ' ') + $"{totalmem.ToString("N0").PadLeft(20, ' ')} B\n");//{Size(collection).ToString("N0").PadLeft(20,' ')} B 
+                    }
+                    if (true)
+                    {
+                        GC.GetTotalMemory(true); long mem = GC.GetAllocatedBytesForCurrentThread();
+                        Hashtable collection = new Hashtable();
+                        for (int i = 0; i < objectCount; i++)
+                        {
+                            var refAtStack = new TestObjectWithStaticMethods() { String = teststring };
+                            refAtStack.String += "1";
+                            collection[i] = refAtStack;
+                        }
+                        long totalmem = GC.GetAllocatedBytesForCurrentThread() - mem;
+                        Console.Write(ret += $"Hashtable<TestObjectWithStaticMethods>: ".PadRight(50, ' ') + $"{totalmem.ToString("N0").PadLeft(20, ' ')} B\n");//{Size(collection).ToString("N0").PadLeft(20,' ')} B 
                     }
 
                     if (true)
@@ -65,8 +127,7 @@ namespace TestMemoryAllocation
                         long totalmem = GC.GetAllocatedBytesForCurrentThread() - mem;
                         Console.Write(ret += $"Hashtable<TestObjectRef>: ".PadRight(50, ' ') + $"{totalmem.ToString("N0").PadLeft(20, ' ')} B\n");//{Size(collection).ToString("N0").PadLeft(20,' ')} B 
                     }
-
-
+                    #endregion
                     if (true)
                     {
                         GC.GetTotalMemory(true); long mem = GC.GetAllocatedBytesForCurrentThread();
