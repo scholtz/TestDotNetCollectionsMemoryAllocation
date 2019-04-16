@@ -2,10 +2,9 @@
 
 This application is intended to test basic memory allocation of selected collections in .NET
 
-## Results
+## Results .NET Core 2.2
 
-.NET Core 2.2
-
+```
 Going to create N objects: 10
 Testing with string: 
 Hashtable<TestObject>:                                          18 000 B
@@ -110,4 +109,4 @@ ConcurrentQueue<TestObject>:                               296 788 272 B
 ConcurrentQueue<TestObjectRef>:                             64 786 008 B
 ConcurrentStack<TestObject>:                               312 000 368 B
 ConcurrentStack<TestObjectRef>:                             80 000 072 B
-Press any key to exit
+```
